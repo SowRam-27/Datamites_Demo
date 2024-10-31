@@ -1,0 +1,19 @@
+# Use the official MySQL image from the Docker Hub
+FROM mysql:latest
+
+# Set environment variables for MySQL
+ENV MYSQL_DATABASE=project_medical_data_history
+ENV MYSQL_ROOT_PASSWORD=root
+
+# Copy the SQL scripts and custom sql script into the container
+COPY ./SQLScripts/ /docker-entrypoint-initdb.d/
+COPY ./MedicalHistoryTaskQueries.sql /MedicalHistoryTaskQueries.sql
+
+# Make the sql script executable
+RUN chmod +x /MedicalHistoryTaskQueries.sql
+
+# Expose the MySQL port
+EXPOSE 3306
+
+# Run the MySQL server
+CMD ["mysqld"]
